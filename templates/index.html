@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            background-color: yellow;
+            display: inline;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Airline Sentiment Analysis</h1>
+    <textarea id="review" rows="4" cols="50" placeholder="Enter your airline review..."></textarea><br>
+    <button onclick="analyzeSentiment()">Analyze</button>
+    <p id="result"></p>
+
+    <script>
+        function analyzeSentiment() {
+            const review = document.getElementById("review").value;
+            
+            fetch("http://localhost:5000/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ review })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = `Sentiment: ${data.sentiment}`;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
