@@ -1,14 +1,8 @@
-from flask import Flask, render_template, request
-import random  # For simulation of sentiment analysis; replace with your model
+from flask import Flask, render_template, request, jsonify
+import pickle
+from test import TextToNum  # Ensure the correct class name
 
 app = Flask(__name__)
-
-# Sample function to simulate sentiment analysis
-def analyze_sentiment(text):
-    # This is a placeholder for actual sentiment analysis.
-    # For example, you could use a pre-trained model here.
-    sentiments = ['Positive', 'Negative', 'Neutral']
-    return random.choice(sentiments)  # Randomly choose sentiment for now.
 
 @app.route("/", methods=["GET"])
 def home():
@@ -16,19 +10,38 @@ def home():
 
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
-    sentiment = None
     if request.method == "POST":
         # Get the message from the form
-        message = request.form['message']
+        message = request.form["message"]
         
-        # Print the user input message to the terminal (debugging purpose)
+        # Print the user input message to the terminal (for debugging)
         print(f"User input: {message}")
         
-        # Call the sentiment analysis function (replace with your actual function)
-        sentiment = analyze_sentiment(message)
-    
-    # Render the page with the sentiment result
-    return render_template("predict.html", sentiment=sentiment)
+        # Process input using TextToNum class
+        ob = TextToNum(message)
+        ob.cleaner()
+        ob.token()
+        ob.removeStop()
+        st = ob.stemme()
+        
+        # Load vectorizer
+        with open("vectorizer.pickle", "rb") as vcfile:
+            vc = pickle.load(vcfile)
+        
+        # Transform input text
+        stvc = " ".join(st)
+        data = vc.transform([stvc])
+
+        # Load model
+        with open("model.pickle", "rb") as mbfile:  # Ensure correct model filename
+            model = pickle.load(mbfile)
+        
+        # Predict sentiment
+        pred = model.predict(data)
+        
+        return jsonify({"result": str(pred[0])})
+
+    return render_template("predict.html", sentiment=None)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5050)
+    app.run(host="0.0.0.0", port=5050, debug=True)
