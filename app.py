@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request
-import random  # For simulation of sentiment analysis; replace with your model
+from flask import Flask, render_template, request, jsonify
+from test import TextToNum
+import pickle
+import random  # Simulated sentiment analysis
 
 app = Flask(__name__)
 
-# Sample function to simulate sentiment analysis
+# Placeholder sentiment analysis function
 def analyze_sentiment(text):
-    # This is a placeholder for actual sentiment analysis.
-    # For example, you could use a pre-trained model here.
     sentiments = ['Positive', 'Negative', 'Neutral']
-    return random.choice(sentiments)  # Randomly choose sentiment for now.
+    return random.choice(sentiments)
 
 @app.route("/", methods=["GET"])
 def home():
@@ -18,17 +18,34 @@ def home():
 def predict():
     sentiment = None
     if request.method == "POST":
-        # Get the message from the form
+        # Get message from form
         message = request.form['message']
-        
-        # Print the user input message to the terminal (debugging purpose)
         print(f"User input: {message}")
+
+        # Text Processing
+        ob = TextToNum(message)
+        ob.cleaner()
+        ob.token()
+        ob.removeStop()
+        st = ob.stemme()  # Fixed incorrect method name
+
+        # Load vectorizer and transform text
+        with open("vectorizer.pickle", "rb") as vcfile:
+            vectorizer = pickle.load(vcfile)
         
-        # Call the sentiment analysis function (replace with your actual function)
-        sentiment = analyze_sentiment(message)
-    
-    # Render the page with the sentiment result
+        stvc = " ".join(st)
+        data = vectorizer.transform([stvc])
+        print(data)
+
+        # Load model and predict
+        with open("model.pickle", "rb") as mbfile:  # Fixed incorrect file reference
+            model = pickle.load(mbfile)
+        
+        pred = model.predict(data)
+
+        return jsonify({"result": str(pred[0])})
+
     return render_template("predict.html", sentiment=sentiment)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5050)
+    app.run(host="0.0.0.0", port=5050)
