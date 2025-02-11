@@ -3,97 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Airline Sentiment Analysis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: url('https://via.placeholder.com/1920x1080') center/cover no-repeat; /* Placeholder image */
-            background-size: cover;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .container {
             text-align: center;
-            background: rgba(18, 62, 88, 0.7); /* Dark background for content */
+            background: rgba(255, 255, 255, 0.1);
             padding: 50px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease-in-out;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .container:hover {
-            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
 
         p {
             font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            opacity: 0.8;
         }
 
         .btn {
-            padding: 15px 30px;
-            background-color: #ff6f61;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background: #ff4757;
             border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            color: white;
+            border-radius: 8px;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: background-color 0.3s ease;
+            color: #fff;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #ff3b2d;
+            background: #e84118;
         }
 
         .footer {
             position: absolute;
             bottom: 20px;
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
-            color: #fff;
-            opacity: 0.8;
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
-
     </style>
 </head>
 <body>
-    <div class="overlay">
-        <div class="container">
-            <h1>Airline Sentiment Analysis</h1>
-            <p>Welcome to our platform where we analyze customer feedback to help airlines improve their services and enhance the flying experience.</p>
-            <button class="btn" onclick="window.location.href='/predict'">Get Started</button>
-        </div>
+    <div class="container">
+        <h1>Airline Sentiment Analysis</h1>
+        <p>Analyze customer feedback to improve airline services and enhance the flying experience.</p>
+        <button class="btn" onclick="window.location.href='/predict'">Get Started</button>
     </div>
 
     <div class="footer">
