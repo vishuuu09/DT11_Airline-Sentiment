@@ -93,20 +93,41 @@
     <div class="container">
         <h1>Sentiment Analysis</h1>
         <p>Enter a message to analyze its sentiment.</p>
-        <form action="/predict" method="POST">
-            <textarea name="message" rows="5" placeholder="Type your message here..."></textarea>
-            <button class="btn" type="submit">Analyze Sentiment</button>
-        </form>
+        
+        <textarea id="message" rows="5" placeholder="Type your message here..."></textarea>
+        <button class="btn" onclick="analyzeSentiment()">Analyze Sentiment</button>
 
-        {% if sentiment %}
-            <div class="result">
-                <p>Sentiment: {{ sentiment }}</p>
-            </div>
-        {% endif %}
+        <div id="result" class="result"></div>
     </div>
 
     <div class="footer">
         <p>&copy; 2025 Airline Sentiment. All Rights Reserved.</p>
     </div>
+
+    <script>
+        function analyzeSentiment() {
+            let message = document.getElementById("message").value;
+            if (message.trim() === "") {
+                alert("Please enter a message!");
+                return;
+            }
+
+            fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "message=" + encodeURIComponent(message)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML = "<strong>Sentiment:</strong> " + data.result;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("result").innerHTML = "<strong>Error:</strong> Could not analyze sentiment.";
+            });
+        }
+    </script>
 </body>
 </html>
