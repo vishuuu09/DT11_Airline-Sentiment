@@ -1,3 +1,5 @@
+gunicorn
 flask 
+sckit-learn
 nltk 
-sckit-learn 
+ 

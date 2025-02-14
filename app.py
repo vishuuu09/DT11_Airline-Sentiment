@@ -40,5 +40,5 @@ def predict():
         return jsonify({"result": str(pred[0])})  # Returns JSON
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)  # Running on port 5000
 
