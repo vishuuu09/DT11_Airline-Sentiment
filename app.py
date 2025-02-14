@@ -27,7 +27,7 @@ def predict():
         ob.cleaner()
         ob.token()
         ob.removeStop()
-        st = ob.stemme()  # Fixed incorrect method name
+        st = ob.stemme()  
 
         # Load vectorizer and transform text
         with open("vectorizer.pickle", "rb") as vcfile:
@@ -42,7 +42,12 @@ def predict():
             model = pickle.load(mbfile)
         
         pred = model.predict(data)
-
+        if pred[0]==0:
+            return jsonify({"result":"Neutral"})
+        elif pred[0]==1:
+            return jsonify({"result":"Positive"})
+        else:
+            return jsonify({"result":"Negative"})
         return jsonify({"result": str(pred[0])})
 
     return render_template("predict.html", sentiment=sentiment)
